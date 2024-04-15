@@ -14,7 +14,9 @@ class Producto(CustomBase):
     img_orig_name: Mapped[str] = mapped_column(String(100))
     img_rand_name: Mapped[str] = mapped_column(String(36))
     id_etiqueta: Mapped[int] = mapped_column(ForeignKey("etiqueta.id"))
+    id_usuario: Mapped[int] = mapped_column(ForeignKey("user.id"))
     etiqueta: Mapped["Etiqueta"] = relationship(back_populates="producto")
+    user: Mapped["User"] = relationship(back_populates="productos")
 
 
     def serialize(self):
