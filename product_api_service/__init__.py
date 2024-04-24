@@ -1,10 +1,24 @@
 from flask import Flask, request
 from flask_cors import CORS
+from flask_mail import Mail, Message
+import os
 
+
+mail = Mail()
 
 def create_app():
     new_app = Flask(__name__)
     cors_app = CORS(new_app)
+
+    new_app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    new_app.config['MAIL_PORT'] = 465
+    new_app.config['MAIL_USE_TLS'] = False
+    new_app.config['MAIL_USE_SSL'] = True
+    new_app.config['MAIL_USERNAME'] = "email"
+    new_app.config['MAIL_PASSWORD'] = 'contraseña'
+    new_app.config['MAIL_DEFAULT_SENDER'] = 'email'
+
+    mail.init_app(new_app)
 
     @new_app.route("/")
     def home_page():

@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request, make_response
 from sqlalchemy.exc import SQLAlchemyError
 from product_api_service.database.session import create_local_session
-from product_api_service import schemas, models
+from product_api_service import mail
+from flask_mail import Message
 from product_api_service.models import User
 import bcrypt
 signup_bp=Blueprint("signup", __name__, url_prefix="/user")
@@ -24,7 +25,13 @@ def register_user():
             new_user=User(nombre=nombre, usuario=usuario, contraseña=hashed_password,is_admin=is_admin, correo=correo)
             db.add(new_user)
             db.commit()
+
+            msg = Message("Usuario registrado correctamente", recipients=[correo])
+            msg.body = f"Hola {nombre},\n\nBienvenido a SportManagement."
+            mail.send(msg)
+
             respuesta=make_response(jsonify({"mensaje":"Usuario creado correctamente"}),200)
+
             respuesta.set_cookie("ultimo_registro",usuario,max_age=3600)
             return respuesta
     except SQLAlchemyError as e:
