@@ -15,6 +15,8 @@ class User(CustomBase):
     correo:Mapped[str] = mapped_column(String(80))
     contraseña: Mapped[str] = mapped_column(String(60))
     is_admin: Mapped[bool] = mapped_column(Boolean)
+    email_confirmed: Mapped[bool] = mapped_column(Boolean)
+    email_code: Mapped[str] = mapped_column(String(60))
 
     def serialize(self):
 
